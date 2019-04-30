@@ -30,6 +30,8 @@
 - 引用字体图片和svg图片
 
 - 清空打包留下的多有js npm i clean-webpack-plugin -D
+
+- 出错友好提示插件 npm install friendly-errors-webpack-plugin --save-dev
 #### 集成eslint
 - 安装eslint 
 - npm install -D eslint 

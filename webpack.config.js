@@ -4,9 +4,18 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const ExtractTextWebpackPlugin = require('extract-text-webpack-plugin');
 const argv = require('yargs-parser')(process.argv.slice(2));
+// 友好提示的插件 https://github.com/geowarin/friendly-errors-webpack-plugin
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
+// 复制文件
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+// 查找可用端口 // github仓库 https://github.com/indexzero/node-portfinder
+const PortFinder = require('portfinder');
+// const config = require('../config'); //config文件夹下index.js文件
+const config = require('./config');
+const utils = require('./utils/notifier');
+const alias = require('./webpack/resolve');
 
 const pro = argv.mode == 'production'; //  区别是生产环境和开发环境
-
 const plugin = [];
 if (pro) {
   //  线上环境
@@ -32,16 +41,34 @@ if (pro) {
     new ExtractTextWebpackPlugin('css/style.css'),
     new ExtractTextWebpackPlugin('css/reset.css'),
     new webpack.HotModuleReplacementPlugin(), // 热更新，热更新不是刷新
+    // copy custom static assets
+    new CopyWebpackPlugin([ // 模块CopyWebpackPlugin  将单个文件或整个文件复制到构建目录
+      {
+        from: path.resolve(__dirname, './static'), // 将static文件夹及其子文件复制到
+        to: config.dev.assetsSubDirectory,
+        ignore: ['.*'],
+      },
+    ]),
+    // new FriendlyErrorsPlugin({
+    //   compilationSuccessInfo: {
+    //     messages: [`Your application is running here: http://${config.dev.host}:${port}`],
+    //   },
+    // }),
   );
 }
-module.exports = {
+const devWebpackConfig = {
   entry: {
     'babel-polyfill': 'babel-polyfill',
     app: path.resolve(__dirname, './src/index.js'),
   }, // 入口文件
   output: {
     filename: pro ? 'app.[chunkhash].js' : 'app.js', // 打包后的文件名称
-    path: path.resolve(__dirname, './dist'), // 输出的路径
+    publicPath: pro
+      // 这里是 /，但要上传到github pages等会路径不对，需要修改为./
+      ? config.build.assetsPublicPath
+      // 这里配置是 /
+      : config.dev.assetsPublicPath,
+    path: config.build.assetsRoot, // 输出的路径
   }, // 出口文件
   module: {
     rules: [
@@ -100,24 +127,42 @@ module.exports = {
   }, // 处理对应模块
   plugins: plugin, // 对应的插件
   devServer: {
-    host: 'localhost',
-    port: 9090, // 端口
+    host: process.env.HOST || config.dev.host,
+    port: (process.env.PORT && Number(process.env.PORT)) || config.dev.port, // 端口
     open: true, // 自动打开浏览器
     hot: true, // 开启热更新
     overlay: true, // 浏览器页面上显示错误
     historyApiFallback: true,
+    quiet: true, // necessary for FriendlyErrorsPlugin
+    compress: true, // 一切服务是否都启用gzip压缩
   }, // 开发服务器配置
-  resolve: {
-    // 别名
-    alias: {
-      '@': path.join(__dirname, 'src'),
-      components: path.join(__dirname, 'components'),
-      store: path.join(__dirname, 'store'),
-      pages: path.join(__dirname, 'src/pages'),
-      styles: path.join(__dirname, 'src/assets/styles'),
-    },
-    // 省略后缀
-    extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.less'],
-  },
+  resolve: alias,
   devtool: pro ? '' : 'inline-source-map',
 };
+
+// webpack将运行由配置文件导出的函数，并且等待promise返回，便于需要异步地加载所需的配置变量。
+module.exports = new Promise((resolve, reject) => {
+  PortFinder.basePort = process.env.PORT || config.dev.port;
+  PortFinder.getPort((err, port) => {
+    if (err) {
+      reject(err);
+    } else {
+      // publish the new Port, necessary for e2e tests
+      process.env.PORT = port;
+      // add port to devServer config
+      devWebpackConfig.devServer.port = port;
+
+      // Add FriendlyErrorsPlugin
+      devWebpackConfig.plugins.push(new FriendlyErrorsPlugin({ // 出错友好处理插件
+        compilationSuccessInfo: { // build成功的话会执行者块
+          messages: [`Your application is running here: http://${devWebpackConfig.devServer.host}:${port}`],
+        },
+        onErrors: config.dev.notifyOnErrors // 如果出错就执行这块,其实是utils里面配置好的提示信息
+          ? utils.createNotifierCallback()
+          : undefined,
+      }));
+
+      resolve(devWebpackConfig);
+    }
+  });
+});
