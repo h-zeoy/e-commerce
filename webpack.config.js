@@ -35,7 +35,10 @@ if (pro) {
   );
 }
 module.exports = {
-  entry: path.resolve(__dirname, './src/index.js'), // 入口文件
+  entry: {
+    'babel-polyfill': 'babel-polyfill',
+    app: path.resolve(__dirname, './src/index.js'),
+  }, // 入口文件
   output: {
     filename: pro ? 'app.[chunkhash].js' : 'app.js', // 打包后的文件名称
     path: path.resolve(__dirname, './dist'), // 输出的路径
@@ -108,8 +111,10 @@ module.exports = {
     // 别名
     alias: {
       '@': path.join(__dirname, 'src'),
-      components: path.join(__dirname, 'src/components'),
+      components: path.join(__dirname, 'components'),
+      store: path.join(__dirname, 'store'),
       pages: path.join(__dirname, 'src/pages'),
+      styles: path.join(__dirname, 'src/assets/styles'),
     },
     // 省略后缀
     extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.less'],
