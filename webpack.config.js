@@ -38,8 +38,8 @@ if (pro) {
       template: './src/index.html', // 用哪个html作为模板
     }),
     // 拆分后会把css文件放到dist目录下的css/style.css
-    new ExtractTextWebpackPlugin('css/style.css'),
-    new ExtractTextWebpackPlugin('css/reset.css'),
+    new ExtractTextWebpackPlugin({ filename: 'css/style.css', disable: true }),
+    new ExtractTextWebpackPlugin({ filename: 'css/reset.css', disable: true }),
     new webpack.HotModuleReplacementPlugin(), // 热更新，热更新不是刷新
     // copy custom static assets
     new CopyWebpackPlugin([ // 模块CopyWebpackPlugin  将单个文件或整个文件复制到构建目录
@@ -75,14 +75,14 @@ const devWebpackConfig = {
       {
         enforce: 'pre', //  代表在解析loader之前就先解析eslint-loader
         test: /\.js$/,
-        exclude: /node_modules/,
-        include: /src/,
+        // exclude: /node_modules/,
+        // include: /src/,
         loader: 'eslint-loader',
       },
       {
         test: /\.(js|jsx)$/,
         loader: 'babel-loader',
-        exclude: /node_modules/,
+        // exclude: /node_modules/,
       },
       {
         test: /\.css$/, // 解析css

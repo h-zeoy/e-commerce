@@ -8,7 +8,7 @@
     "build": "cross-env  webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js src",
-    "fix": "eslint --fix --ext .js utils",
+    "fix": "eslint --fix --ext .js components",
     "clean": "cross-env rm -rf dist && mkdir dist"
   },
   "repository": {
@@ -24,15 +24,17 @@
   "homepage": "https://github.com/h-zeoy/e-commerce#readme",
   "devDependencies": {
     "@babel/core": "^7.4.3",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
     "@babel/preset-env": "^7.4.3",
     "@babel/preset-react": "^7.0.0",
     "autoprefixer": "^9.5.1",
+    "babel-eslint": "^8.2.6",
     "babel-loader": "^8.0.0-beta.0",
     "clean-webpack-plugin": "^2.0.1",
     "copy-webpack-plugin": "^5.0.3",
     "cross-env": "^5.2.0",
     "css-loader": "^2.1.1",
-    "eslint": "^5.16.0",
+    "eslint": "^4.19.1",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-loader": "^2.1.2",
     "eslint-plugin-import": "^2.17.2",
@@ -59,10 +61,16 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/runtime": "^7.4.3",
+    "antd-mobile": "^2.2.13",
+    "antd-mobile-demo-data": "^0.2.0",
+    "array-tree-filter": "^2.1.0",
+    "babel-plugin-import": "^1.11.0",
     "babel-polyfill": "^6.26.0",
+    "rc-form": "^2.4.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-router-dom": "^5.0.0",
-    "redux": "^4.0.1"
+    "redux": "^4.0.1",
+    "swiper": "^4.5.0"
   }
 }

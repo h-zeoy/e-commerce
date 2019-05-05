@@ -8,6 +8,7 @@ module.exports = {
     store: path.join(__dirname, '../store'),
     pages: path.join(__dirname, '../src/pages'),
     styles: path.join(__dirname, '../static/styles'),
+    images: path.join(__dirname, '../static/image'),
   },
   // 省略后缀
   extensions: ['.js', '.jsx', '.json', '.css', '.scss', '.less'],
