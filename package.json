@@ -8,7 +8,7 @@
     "build": "cross-env  webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint --ext .js src",
-    "fix": "eslint --fix --ext .js components",
+    "fix": "eslint --fix --ext .js src",
     "clean": "cross-env rm -rf dist && mkdir dist"
   },
   "repository": {
