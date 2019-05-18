@@ -163,17 +163,6 @@ button::-moz-focus-inner,
 input::-moz-focus-inner {
   padding: 0;
   border: 0; }
-input{
-    outline-style: none ;
-    outline-width: 0px ;
-    border: none ;
-    border-style: none ;
-    text-shadow: none ;
-    -webkit-appearance: none ;
-    -webkit-user-select: text ;
-    outline-color: transparent ;
-    box-shadow: none;
-}
 input[type="button"],
 input[type="submit"],
 input[type="reset"],
