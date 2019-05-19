@@ -3,39 +3,62 @@ import { SwiperComponent } from '../../../components/plugins/swiper';
 import ComponentNav from '../../../components/componentNav/componentNav';
 import ComponentList from '../../../components/componentList/componentList';
 import Tabbar from '../../../components/componentTabbar/componentTabbar';
+import navdata from '../../../utils/navData';
 import './home.less';
+import 'whatwg-fetch';
 
+const formData = new FormData();
 class Home extends Component {
   constructor(props) {
     super(props);
     this.state = {
       imgUrl: ['../../../static/image/banner/banner1.jpg', '../../../static/image/banner/banner2.jpg', '../../../static/image/banner/banner3.jpg', '../../../static/image/banner/banner4.jpg'],
-      navData: {
-        default: 1,
-        list: [{ index: 1, title: '今日特卖' }, { index: 2, title: '童装' }, { index: 3, title: '母婴' }, { index: 4, title: '居家' },
-          { index: 5, title: '美食' }, { index: 6, title: '女装' }, { index: 7, title: '鞋包' }, { index: 8, title: '美妆' },
-          { index: 9, title: '进口' }],
-      },
       navIndex: 1,
-      listData: [{ title: '【夏日微醺体验】8瓶装RIO锐澳微醺鸡尾酒', price: '39.9' }, { title: '【夏日微醺体验】8瓶装RIO锐澳微醺鸡尾酒', price: '39.9' }, { title: '【夏日微醺体验】8瓶装RIO锐澳微醺鸡尾酒', price: '59.9' }],
+      listData: [],
     };
     // this.handleClick = this.handleClick.bind(this);
+  }
+
+  componentWillMount() {
+    this.isUnmount = true;
+    this.getTodaySale();
   }
 
   componentDidMount() {
     SwiperComponent('.swiper-container-banner', '.swiper-pagination', true);
   }
 
-  homeNavClick(item) {
+  componentWillUnmount() {
+    this.isUnmount = false;
+  }
+
+  async getTodaySale() {
+    const _ = await fetch('http://localhost:3000/api/baby/todaysale?channel=今日特卖&type=', {
+      mode: 'cors',
+      cache: 'default',
+    }).then(response => response.json());
+    this.isUnmount
+      ? this.setState({ listData: [..._.data] })
+      : '';
+  }
+
+  async homeNavClick(item) {
+    const type = item.title !== '今日特卖' ? item.title : '';
+    const _ = await fetch(`http://localhost:3000/api/baby/todaysale?channel=今日特卖&type=${type}`, {
+      mode: 'cors',
+      cache: 'default',
+    }).then(response => response.json());
+    this.isUnmount
+      ? this.setState({ listData: [..._.data] })
+      : '';
     this.setState({
       navIndex: item.index,
-    }, () => {
-      console.log(item.index);
     });
+    console.log('父组件的', item.title);
   }
 
   render() {
-    const { imgUrl, navData, listData } = this.state;
+    const { imgUrl, listData } = this.state;
     return (
       <div className="wrap">
         <aside className="swiper-container swiper-container-banner">
@@ -57,10 +80,10 @@ class Home extends Component {
           <li><img src="../../../static/image/home/h2.png" alt="9.9包邮" /></li>
           <li><img src="../../../static/image/home/h3.png" alt="新品特惠" /></li>
         </ul>
-        <ComponentNav navData={navData} comNav={this.homeNavClick.bind(this)} />
-        <p className="home-list-header"> 每天9点准时上新 </p>
+        <ComponentNav navData={navdata} comNav={this.homeNavClick.bind(this)} />
+        <p className="home-list-header"> 每日新品 </p>
         <ComponentList listData={listData} type="big" />
-        <p className="bian" />
+        <p className="bian">暂无数据</p>
         <Tabbar />
       </div>
 

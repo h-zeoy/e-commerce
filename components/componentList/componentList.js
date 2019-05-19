@@ -14,9 +14,10 @@ class CompomemtListBig extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { listData } = this.props;
     const { data } = this.state;
+    console.log(listData);
     if (nextProps.listData !== listData) {
       this.setState({
-        data: [...data, ...nextProps.listData],
+        data: [...nextProps.listData],
       });
     }
   }

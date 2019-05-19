@@ -4,12 +4,13 @@ import './componentItem.less';
 class CompomemtListBig extends React.Component {
   render() {
     const { item, type } = this.props;
+    console.log(item);
     if (type === 'big') {
       return (
         <div className="list-item1">
-          <img src="https://b1.hucdn.com/upload/tuan/1903/26/90309504571221_750x350.jpg!750.webp" alt="" />
+          <img src={item.thumbnailUrl} alt="" />
           <div className="list-item-title">
-            <p className="title">{item.title}</p>
+            <p className="title">{item.name}</p>
             <p className="list-p"><i className="list-item-price">¥{item.price}</i><em className="list-item-btn">马上抢</em></p>
           </div>
         </div>
@@ -17,7 +18,7 @@ class CompomemtListBig extends React.Component {
     } else if (type === 'small') {
       return (
         <div className="list-item2">
-          <img src="https://b1.hucdn.com/upload/item/1806/25/11461731115171_800x800.jpg!250x250.webp" alt="" />
+          <img src={item.thumbnailUrl} alt="" />
           <div className="list-item-title">
             <p className="title">{item.title}</p>
             <p className="list-item-price">¥{item.price}</p>

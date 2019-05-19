@@ -19,6 +19,7 @@
       "jsx-a11y/label-has-associated-control": "off",
       "jsx-a11y/label-has-for": "off", 
       "react/no-unknown-property": 1,
+      "no-unused-expressions": 0,
       "no-plusplus": [0],
       "eqeqeq": [0],
       "no-empty": [0],

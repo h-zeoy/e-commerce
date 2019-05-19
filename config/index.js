@@ -39,7 +39,8 @@ module.exports = {
     env: require('./dev.env'),
     // 下面是dev-server的端口号，可以自行更改
     port: 9090,
-    host: 'localhost',
+    host: '192.168.124.5',
+    // host: 'localhost',
     // 下面表示是否自定代开浏览器
     autoOpenBrowser: true,
     assetsSubDirectory: 'static',
@@ -47,7 +48,7 @@ module.exports = {
     // 下面是代理表，作用是用来，建一个虚拟api服务器用来代理本机的请求，只能用于开发模式
     proxyTable: {
       '/api': {
-        // target: 'http://localhost:36742', // 目标域名
+        target: 'http://localhost:3000', // 目标域名
         // target: 'http://exchange.babyfs.cn', // 目标域名
         // target: 'http://mall.dev.babyfs.cn', // 目标域名
         changeOrigin: true,

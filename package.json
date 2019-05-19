@@ -61,6 +61,7 @@
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.4.3",
     "@babel/runtime": "^7.4.3",
+    "FormData": "^0.10.1",
     "antd-mobile": "^2.2.13",
     "antd-mobile-demo-data": "^0.2.0",
     "array-tree-filter": "^2.1.0",
@@ -69,8 +70,11 @@
     "rc-form": "^2.4.4",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
+    "react-redux": "^7.0.3",
     "react-router-dom": "^5.0.0",
     "redux": "^4.0.1",
-    "swiper": "^4.5.0"
+    "redux-thunk": "^2.3.0",
+    "swiper": "^4.5.0",
+    "whatwg-fetch": "^3.0.0"
   }
 }

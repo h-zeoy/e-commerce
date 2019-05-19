@@ -7,8 +7,8 @@ class ComponentNav extends Component {
     super(props);
     const { navData } = this.props;
     this.state = {
-      data: navData,
-      indexDefult: navData.default,
+      data: navData.navData,
+      indexDefult: navData.navData.default,
     };
     // this.handleClick = this.handleClick.bind(this);
   }
@@ -19,9 +19,9 @@ class ComponentNav extends Component {
 
   componentWillReceiveProps(nextProps) {
     const { navData } = this.props;
-    if (nextProps.navData !== navData) {
+    if (nextProps.navData.navData !== navData.navData) {
       this.setState({
-        data: nextProps.navData,
+        data: nextProps.navData.navData,
       });
     }
   }
