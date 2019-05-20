@@ -7,7 +7,6 @@ import navdata from '../../../utils/navData';
 import './home.less';
 import 'whatwg-fetch';
 
-const formData = new FormData();
 class Home extends Component {
   constructor(props) {
     super(props);
@@ -16,7 +15,7 @@ class Home extends Component {
       navIndex: 1,
       listData: [],
     };
-    // this.handleClick = this.handleClick.bind(this);
+    // this.goList = this.goList.bind(this);
   }
 
   componentWillMount() {
@@ -57,6 +56,16 @@ class Home extends Component {
     console.log('父组件的', item.title);
   }
 
+  goList(num) {
+    if (num === 1) {
+      console.log('新品特惠');
+    } else if (num === 2) {
+      console.log('限时抢购');
+    } else {
+      console.log('9.9包邮');
+    }
+  }
+
   render() {
     const { imgUrl, listData } = this.state;
     return (
@@ -76,9 +85,9 @@ class Home extends Component {
           <div className="swiper-pagination" />
         </aside>
         <ul className="jieshao">
-          <li><img src="../../../static/image/home/h1.png" alt="限时抢购" /></li>
-          <li><img src="../../../static/image/home/h2.png" alt="9.9包邮" /></li>
-          <li><img src="../../../static/image/home/h3.png" alt="新品特惠" /></li>
+          <li onClick={this.goList.bind(this, 2)}><img src="../../../static/image/home/h1.png" alt="限时抢购" /></li>
+          <li onClick={this.goList.bind(this, 1)}><img src="../../../static/image/home/h2.png" alt="9.9包邮" /></li>
+          <li onClick={this.goList.bind(this, 3)}><img src="../../../static/image/home/h3.png" alt="新品特惠" /></li>
         </ul>
         <ComponentNav navData={navdata} comNav={this.homeNavClick.bind(this)} />
         <p className="home-list-header"> 每日新品 </p>

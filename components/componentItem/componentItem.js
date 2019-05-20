@@ -2,12 +2,19 @@ import React from 'react';
 import './componentItem.less';
 
 class CompomemtListBig extends React.Component {
+  handleClickItem(item) {
+    const { handlList } = this.props;
+    this.setState({
+      indexDefult: item.index,
+    });
+    handlList(item);
+  }
+
   render() {
     const { item, type } = this.props;
-    console.log(item);
     if (type === 'big') {
       return (
-        <div className="list-item1">
+        <div className="list-item1" onClick={this.handleClickItem.bind(this, item)}>
           <img src={item.thumbnailUrl} alt="" />
           <div className="list-item-title">
             <p className="title">{item.name}</p>

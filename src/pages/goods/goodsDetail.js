@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import './goodsDetail.less';
 import { SwiperComponent } from '../../../components/plugins/swiper';
 
@@ -33,15 +33,38 @@ class goodsDetail extends React.Component {
         '../../../static/image/detail/d16.jpeg',
         '../../../static/image/detail/d17.jpg',
         '../../../static/image/detail/d18.jpg'],
+      detailData: {},
     };
+  }
+
+  componentWillMount() {
+    this.isUnmount = true;
+    this.init();
   }
 
   componentDidMount() {
     SwiperComponent('.swiper-container-banner', '.swiper-pagination', false);
   }
 
+  componentWillUnmount() {
+    this.isUnmount = false;
+  }
+
+  async init() {
+    const { history } = this.props;
+    const id = String(history.location.search).split('=')[1];
+    const _ = await fetch(`http://localhost:3000/api/baby/listone?id=${id}`, {
+      mode: 'cors',
+      cache: 'default',
+    }).then(response => response.json());
+    this.isUnmount
+      ? this.setState({ detailData: [..._.data] })
+      : '';
+    console.log(_);
+  }
+
   render() {
-    const { imgUrl, imgDetailUrl, data } = this.state;
+    const { imgUrl, imgDetailUrl, data, detailData } = this.state;
     return (
       <div className="detail-wrap">
         {/* 轮播图 */}
@@ -82,7 +105,7 @@ class goodsDetail extends React.Component {
           </div>
           <div className="sale-title-wrap">
             <div className="sale-title">
-              <h3 data-sync="" data-sync-title=""> 领卷 第二件减5元 网红夏日碎冰杯快速制冷少女学生水杯情侣杯 快速制冷 </h3>
+              <h3 data-sync="" data-sync-title=""> {detailData.name} </h3>
             </div>
           </div>
         </div>
@@ -144,4 +167,4 @@ class goodsDetail extends React.Component {
     );
   }
 }
-export default goodsDetail;
+export default withRouter(goodsDetail);

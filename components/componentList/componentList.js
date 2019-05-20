@@ -1,8 +1,10 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 import './componentList.less';
 import ComponentItem from '../componentItem/componentItem';
 
-class CompomemtListBig extends React.Component {
+
+class CompomemtList extends React.Component {
   constructor(props) {
     super(props);
     const { listData } = this.props;
@@ -14,12 +16,21 @@ class CompomemtListBig extends React.Component {
   componentWillReceiveProps(nextProps) {
     const { listData } = this.props;
     const { data } = this.state;
-    console.log(listData);
     if (nextProps.listData !== listData) {
       this.setState({
         data: [...nextProps.listData],
       });
     }
+  }
+
+  async handleClickList(item) {
+    const { history } = this.props;
+    console.log(history);
+    history.push({
+      pathname: '/goodsDetail',
+      search: `?id=${item.goodsId}`,
+    });
+    console.log('list父组件的', item.goodsId);
   }
 
   render() {
@@ -31,7 +42,7 @@ class CompomemtListBig extends React.Component {
           {
             data.map((item) => {
               return (
-                <ComponentItem item={item} type={type} key={Math.random()} />
+                <ComponentItem item={item} type={type} key={Math.random()} handlList={this.handleClickList.bind(this)} />
               );
             })
           }
@@ -52,4 +63,4 @@ class CompomemtListBig extends React.Component {
     }
   }
 }
-export default CompomemtListBig;
+export default withRouter(CompomemtList);
